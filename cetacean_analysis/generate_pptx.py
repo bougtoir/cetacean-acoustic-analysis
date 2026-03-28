@@ -654,20 +654,28 @@ def make_species_overview_diagram(prs, lang="ja"):
                              fill_color=COLOR_WHITE, line_color=COLOR_GRAY, line_width=Pt(1))
         set_text(freq_box, freq, font_size=Pt(12), font_color=COLOR_BODY, bold=True)
 
-        # Entropy (with bar)
+        # Entropy (colored bar + label to the right)
         ent_val = float(entropy.split()[0])
         max_ent = 8.0
-        bar_width = Cm(5.5 * ent_val / max_ent)
-        add_shape(slide, Cm(24), y + Cm(0.15), bar_width, Cm(1.2),
+        bar_max_width = Cm(4.0)
+        bar_width = Cm(4.0 * ent_val / max_ent)
+        # Container with border
+        ent_container = add_shape(slide, Cm(24), y, Cm(6), Cm(1.5),
+                                  shape_type=MSO_SHAPE.ROUNDED_RECTANGLE,
+                                  fill_color=COLOR_WHITE, line_color=COLOR_GRAY, line_width=Pt(1))
+        # Colored bar
+        add_shape(slide, Cm(24.2), y + Cm(0.2), bar_width, Cm(1.1),
                   shape_type=MSO_SHAPE.RECTANGLE, fill_color=color)
-        ent_label = slide.shapes.add_textbox(Cm(24), y, Cm(6), Cm(1.5))
+        # Label text to the right of the bar area
+        ent_label = slide.shapes.add_textbox(Cm(28.3), y, Cm(1.7), Cm(1.5))
         etf = ent_label.text_frame
+        etf.word_wrap = False
         ep = etf.paragraphs[0]
         ep.text = entropy
-        ep.font.size = Pt(11)
-        ep.font.color.rgb = COLOR_WHITE
+        ep.font.size = Pt(10)
+        ep.font.color.rgb = color
         ep.font.bold = True
-        ep.alignment = PP_ALIGN.CENTER
+        ep.alignment = PP_ALIGN.LEFT
 
     # Footer
     note_text = "※ すべての要素は編集可能です" if lang == "ja" else "Note: All elements are editable"
