@@ -200,7 +200,7 @@ def create_jasa_manuscript():
 
     add_jasa_paragraph(doc,
         "Quantitative analysis of encoding structures in cetacean acoustic communication: "
-        "Verification of CDMA-like code division and beat frequency hypotheses",
+        "Verification of code division multiple access-like code division and beat frequency hypotheses",
         font_size=14, bold=True, alignment=WD_ALIGN_PARAGRAPH.CENTER)
 
     add_jasa_paragraph(doc, "")
@@ -806,6 +806,41 @@ def create_jasa_manuscript():
         first_line_indent=Inches(0))
 
     # ================================================================
+    # AUTHOR DECLARATIONS
+    # ================================================================
+
+    add_jasa_heading(doc, "AUTHOR DECLARATIONS", level=1)
+
+    add_jasa_heading(doc, "Conflict of Interest", level=2)
+
+    add_jasa_paragraph(doc,
+        "The authors have no conflicts of interest to disclose.",
+        first_line_indent=Inches(0))
+
+    add_jasa_heading(doc, "Data Availability", level=2)
+
+    add_jasa_paragraph(doc,
+        "The data that support the findings of this study are openly available. "
+        "All acoustic recordings were obtained from the Watkins Marine Mammal Sound "
+        "Database (WMMS), maintained by the Woods Hole Oceanographic Institution and "
+        "publicly accessible at https://whoicf2.whoi.edu/science/B/whalesounds/index.cfm. "
+        "The dataset was accessed in Parquet format via the HuggingFace repository "
+        "(https://huggingface.co/datasets/confit/wmms-parquet). The database contains "
+        "1,357 recordings from 32 marine mammal species and is freely available for "
+        "research purposes without access restrictions.",
+        first_line_indent=Inches(0))
+
+    add_jasa_heading(doc, "Code Availability", level=2)
+
+    add_jasa_paragraph(doc,
+        "The analysis code used in this study is available on GitHub at "
+        "https://github.com/bougtoir/wip/tree/devin/1774578035-cetacean-acoustic-analysis/cetacean_analysis. "
+        "The repository includes all Python scripts for spectrogram analysis, inter-click "
+        "interval analysis, bispectral analysis, information entropy analysis, temporal "
+        "structure analysis, cross-species comparison, and CDMA-like orthogonality testing.",
+        first_line_indent=Inches(0))
+
+    # ================================================================
     # REFERENCES
     # ================================================================
 
@@ -1054,8 +1089,8 @@ def create_jasa_cover_letter():
     run.font.size = Pt(12)
     run = p.add_run(
         "\u201cQuantitative analysis of encoding structures in cetacean acoustic "
-        "communication: Verification of CDMA-like code division and beat frequency "
-        "hypotheses\u201d")
+        "communication: Verification of code division multiple access-like code division "
+        "and beat frequency hypotheses\u201d")
     run.font.size = Pt(12)
     run.italic = True
 
