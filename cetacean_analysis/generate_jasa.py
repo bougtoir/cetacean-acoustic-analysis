@@ -20,6 +20,7 @@ from docx.enum.text import WD_ALIGN_PARAGRAPH, WD_LINE_SPACING
 from docx.oxml import OxmlElement
 from docx.oxml.ns import qn
 from docx.shared import Inches, Pt
+from lxml import etree
 
 SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
 OUTPUT_DIR = os.path.join(SCRIPT_DIR, "output")
@@ -192,15 +193,15 @@ def create_jasa_manuscript():
     # TITLE PAGE
     # ================================================================
 
-    add_jasa_paragraph(doc, "Running title: Encoding structures in cetacean acoustics",
+    add_jasa_paragraph(doc, "Running title: Code division and beat frequency in cetacean acoustics",
                        font_size=10, italic=True, alignment=WD_ALIGN_PARAGRAPH.RIGHT)
 
     for _ in range(3):
         add_jasa_paragraph(doc, "")
 
     add_jasa_paragraph(doc,
-        "Quantitative analysis of encoding structures in cetacean acoustic communication: "
-        "Verification of code division multiple access-like code division and beat frequency hypotheses",
+        "Encoding structures in cetacean acoustics: "
+        "Code division and beat frequency analysis",
         font_size=14, bold=True, alignment=WD_ALIGN_PARAGRAPH.CENTER)
 
     add_jasa_paragraph(doc, "")
@@ -489,6 +490,13 @@ def create_jasa_manuscript():
         "(2,309 Hz) and killer whales (1,804 Hz) occupied intermediate positions.",
         first_line_indent=Inches(0.5))
 
+    # FIGS. 1-6: Spectrograms (embedded at first call-out)
+    for idx, sp in enumerate(["Sperm_Whale", "Humpback_Whale", "Killer_Whale",
+                               "Fin_Finback_Whale", "Bottlenose_Dolphin", "Beluga_White_Whale"], 1):
+        img = os.path.join(OUTPUT_DIR, f"spectrogram_{sp}_en.png")
+        add_figure_with_caption(doc, img, idx,
+                                f"Spectrogram analysis of {sp.replace('_', ' ')} recordings.")
+
     add_jasa_paragraph(doc, "")
 
     # TABLE II
@@ -541,6 +549,12 @@ def create_jasa_manuscript():
         "(3.6\u201310.4 ms), reflecting their high-repetition-rate echolocation clicks.",
         first_line_indent=Inches(0.5))
 
+    # FIGS. 7-9: ICI (embedded at first call-out)
+    for idx, sp in enumerate(["Sperm_Whale", "Killer_Whale", "Bottlenose_Dolphin"], 7):
+        img = os.path.join(OUTPUT_DIR, f"ici_{sp}_en.png")
+        add_figure_with_caption(doc, img, idx,
+                                f"Inter-click interval distribution for {sp.replace('_', ' ')}.")
+
     add_jasa_paragraph(doc, "")
 
     # TABLE III
@@ -588,6 +602,13 @@ def create_jasa_manuscript():
         "beat frequency hypothesis.",
         first_line_indent=Inches(0.5))
 
+    # FIGS. 10-15: Bispectrum (embedded at first call-out)
+    for idx, sp in enumerate(["Sperm_Whale", "Humpback_Whale", "Killer_Whale",
+                               "Fin_Finback_Whale", "Bottlenose_Dolphin", "Beluga_White_Whale"], 10):
+        img = os.path.join(OUTPUT_DIR, f"bispectrum_{sp}_en.png")
+        add_figure_with_caption(doc, img, idx,
+                                f"Bispectrum analysis of {sp.replace('_', ' ')} recordings.")
+
     # D. Entropy
     add_jasa_heading(doc, "D. Information entropy and Zipf analysis", level=2)
 
@@ -608,6 +629,13 @@ def create_jasa_manuscript():
         "songs exhibit language-like statistical properties.",
         first_line_indent=Inches(0.5))
 
+    # FIGS. 16-21: Entropy (embedded at first call-out)
+    for idx, sp in enumerate(["Sperm_Whale", "Humpback_Whale", "Killer_Whale",
+                               "Fin_Finback_Whale", "Bottlenose_Dolphin", "Beluga_White_Whale"], 16):
+        img = os.path.join(OUTPUT_DIR, f"entropy_{sp}_en.png")
+        add_figure_with_caption(doc, img, idx,
+                                f"Information entropy and Zipf analysis of {sp.replace('_', ' ')}.")
+
     # E. Temporal
     add_jasa_heading(doc, "E. Temporal structure", level=2)
 
@@ -620,6 +648,13 @@ def create_jasa_manuscript():
         "odontocetes.",
         first_line_indent=Inches(0.5))
 
+    # FIGS. 22-27: Temporal (embedded at first call-out)
+    for idx, sp in enumerate(["Sperm_Whale", "Humpback_Whale", "Killer_Whale",
+                               "Fin_Finback_Whale", "Bottlenose_Dolphin", "Beluga_White_Whale"], 22):
+        img = os.path.join(OUTPUT_DIR, f"temporal_{sp}_en.png")
+        add_figure_with_caption(doc, img, idx,
+                                f"Temporal structure analysis of {sp.replace('_', ' ')}.")
+
     # F. Cross-species
     add_jasa_heading(doc, "F. Cross-species comparison", level=2)
 
@@ -630,6 +665,11 @@ def create_jasa_manuscript():
         "supporting the notion that each species occupies a distinct region of acoustic "
         "feature space.",
         first_line_indent=Inches(0.5))
+
+    # FIG. 28: Cross-species (embedded at first call-out)
+    img = os.path.join(OUTPUT_DIR, "cross_species_en.png")
+    add_figure_with_caption(doc, img, 28,
+                            "Cross-species box-plot comparison of acoustic features.")
 
     # G. CDMA
     add_jasa_heading(doc, "G. CDMA-like orthogonality test", level=2)
@@ -651,6 +691,11 @@ def create_jasa_manuscript():
         "amplitude modulation, or individual-specific features\u2014may contribute to signal "
         "discrimination in practice.",
         first_line_indent=Inches(0.5))
+
+    # FIG. 29: CDMA (embedded at first call-out)
+    img = os.path.join(OUTPUT_DIR, "cdma_en.png")
+    add_figure_with_caption(doc, img, 29,
+                            "CDMA-like orthogonality analysis: within- vs. between-species spectral correlation.")
 
     # ================================================================
     # IV. DISCUSSION
@@ -910,114 +955,14 @@ def create_jasa_manuscript():
         add_reference(doc, ref)
 
     # ================================================================
-    # FIGURE CAPTIONS PAGE
+    # LINE NUMBERING
     # ================================================================
-
-    doc.add_page_break()
-    add_jasa_heading(doc, "FIGURE CAPTIONS", level=1)
-
-    captions = [
-        ("FIG. 1.", "Spectrogram analysis of sperm whale (Physeter macrocephalus) recordings showing species-specific frequency patterns."),
-        ("FIG. 2.", "Spectrogram analysis of humpback whale (Megaptera novaeangliae) recordings."),
-        ("FIG. 3.", "Spectrogram analysis of killer whale (Orcinus orca) recordings."),
-        ("FIG. 4.", "Spectrogram analysis of fin whale (Balaenoptera physalus) recordings."),
-        ("FIG. 5.", "Spectrogram analysis of bottlenose dolphin (Tursiops truncatus) recordings."),
-        ("FIG. 6.", "Spectrogram analysis of beluga whale (Delphinapterus leucas) recordings."),
-        ("FIG. 7.", "Inter-click interval (ICI) distribution for sperm whale recordings."),
-        ("FIG. 8.", "Inter-click interval (ICI) distribution for killer whale recordings."),
-        ("FIG. 9.", "Inter-click interval (ICI) distribution for bottlenose dolphin recordings."),
-        ("FIG. 10.", "Bispectrum analysis of sperm whale recordings showing bicoherence maps."),
-        ("FIG. 11.", "Bispectrum analysis of humpback whale recordings."),
-        ("FIG. 12.", "Bispectrum analysis of killer whale recordings."),
-        ("FIG. 13.", "Bispectrum analysis of fin whale recordings."),
-        ("FIG. 14.", "Bispectrum analysis of bottlenose dolphin recordings."),
-        ("FIG. 15.", "Bispectrum analysis of beluga whale recordings."),
-        ("FIG. 16.", "Information entropy and Zipf distribution analysis of sperm whale recordings."),
-        ("FIG. 17.", "Information entropy and Zipf distribution analysis of humpback whale recordings."),
-        ("FIG. 18.", "Information entropy and Zipf distribution analysis of killer whale recordings."),
-        ("FIG. 19.", "Information entropy and Zipf distribution analysis of fin whale recordings."),
-        ("FIG. 20.", "Information entropy and Zipf distribution analysis of bottlenose dolphin recordings."),
-        ("FIG. 21.", "Information entropy and Zipf distribution analysis of beluga whale recordings."),
-        ("FIG. 22.", "Temporal structure analysis of sperm whale recordings."),
-        ("FIG. 23.", "Temporal structure analysis of humpback whale recordings."),
-        ("FIG. 24.", "Temporal structure analysis of killer whale recordings."),
-        ("FIG. 25.", "Temporal structure analysis of fin whale recordings."),
-        ("FIG. 26.", "Temporal structure analysis of bottlenose dolphin recordings."),
-        ("FIG. 27.", "Temporal structure analysis of beluga whale recordings."),
-        ("FIG. 28.", "Cross-species box-plot comparison of acoustic features."),
-        ("FIG. 29.", "CDMA-like orthogonality analysis: within- vs. between-species spectral correlation."),
-    ]
-
-    for label, caption in captions:
-        p = doc.add_paragraph()
-        run_label = p.add_run(label + " ")
-        run_label.font.name = "Times New Roman"
-        run_label.font.size = Pt(12)
-        run_label.bold = True
-        run_text = p.add_run(caption)
-        run_text.font.name = "Times New Roman"
-        run_text.font.size = Pt(12)
-        p.paragraph_format.line_spacing_rule = WD_LINE_SPACING.DOUBLE
-
-    # ================================================================
-    # FIGURES (appended at end)
-    # ================================================================
-
-    doc.add_page_break()
-    add_jasa_heading(doc, "FIGURES", level=1)
-
-    species_order = [
-        "Sperm_Whale", "Humpback_Whale", "Killer_Whale",
-        "Fin_Finback_Whale", "Bottlenose_Dolphin", "Beluga_White_Whale"
-    ]
-
-    fig_num = 1
-
-    # Spectrograms (FIGS 1-6)
-    for sp in species_order:
-        img = os.path.join(OUTPUT_DIR, f"spectrogram_{sp}_en.png")
-        add_figure_with_caption(doc, img, fig_num,
-                                f"Spectrogram analysis of {sp.replace('_', ' ')} recordings.")
-        fig_num += 1
-
-    # ICI (FIGS 7-9)
-    for sp in ["Sperm_Whale", "Killer_Whale", "Bottlenose_Dolphin"]:
-        img = os.path.join(OUTPUT_DIR, f"ici_{sp}_en.png")
-        add_figure_with_caption(doc, img, fig_num,
-                                f"Inter-click interval distribution for {sp.replace('_', ' ')}.")
-        fig_num += 1
-
-    # Bispectrum (FIGS 10-15)
-    for sp in species_order:
-        img = os.path.join(OUTPUT_DIR, f"bispectrum_{sp}_en.png")
-        add_figure_with_caption(doc, img, fig_num,
-                                f"Bispectrum analysis of {sp.replace('_', ' ')} recordings.")
-        fig_num += 1
-
-    # Entropy (FIGS 16-21)
-    for sp in species_order:
-        img = os.path.join(OUTPUT_DIR, f"entropy_{sp}_en.png")
-        add_figure_with_caption(doc, img, fig_num,
-                                f"Information entropy and Zipf analysis of {sp.replace('_', ' ')}.")
-        fig_num += 1
-
-    # Temporal (FIGS 22-27)
-    for sp in species_order:
-        img = os.path.join(OUTPUT_DIR, f"temporal_{sp}_en.png")
-        add_figure_with_caption(doc, img, fig_num,
-                                f"Temporal structure analysis of {sp.replace('_', ' ')}.")
-        fig_num += 1
-
-    # Cross-species (FIG 28)
-    img = os.path.join(OUTPUT_DIR, "cross_species_en.png")
-    add_figure_with_caption(doc, img, fig_num,
-                            "Cross-species box-plot comparison of acoustic features.")
-    fig_num += 1
-
-    # CDMA (FIG 29)
-    img = os.path.join(OUTPUT_DIR, "cdma_en.png")
-    add_figure_with_caption(doc, img, fig_num,
-                            "CDMA-like orthogonality analysis: within- vs. between-species spectral correlation.")
+    for section in doc.sections:
+        sectPr = section._sectPr
+        lnNumType = etree.SubElement(sectPr,
+            '{http://schemas.openxmlformats.org/wordprocessingml/2006/main}lnNumType')
+        lnNumType.set('{http://schemas.openxmlformats.org/wordprocessingml/2006/main}countBy', '1')
+        lnNumType.set('{http://schemas.openxmlformats.org/wordprocessingml/2006/main}restart', 'continuous')
 
     # Save
     path = os.path.join(PAPER_DIR, "JASA_Manuscript_Cetacean_Encoding.docx")
@@ -1088,9 +1033,8 @@ def create_jasa_cover_letter():
     run = p.add_run("Submission of Manuscript \u2014 ")
     run.font.size = Pt(12)
     run = p.add_run(
-        "\u201cQuantitative analysis of encoding structures in cetacean acoustic "
-        "communication: Verification of code division multiple access-like code division "
-        "and beat frequency hypotheses\u201d")
+        "\u201cEncoding structures in cetacean acoustics: "
+        "Code division and beat frequency analysis\u201d")
     run.font.size = Pt(12)
     run.italic = True
 
