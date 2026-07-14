@@ -1,0 +1,111 @@
+{
+  "dataset": {
+    "name": "confit/wmms-parquet",
+    "revision": "a90a38e0006991f0c6f6d4e05261949a1da7f14e",
+    "n_recordings": 1357,
+    "n_species": 32,
+    "max_samples_per_species": 10,
+    "analysis_seconds": 60,
+    "target_sr": 16000,
+    "ici_window_ms": [
+      1.0,
+      2000.0
+    ]
+  },
+  "species_order": [
+    "Sperm_Whale",
+    "Humpback_Whale",
+    "Killer_Whale",
+    "Fin,_Finback_Whale",
+    "Bottlenose_Dolphin",
+    "Beluga,_White_Whale"
+  ],
+  "species": {
+    "Sperm_Whale": {
+      "centroid_hz": 2323.0229177877914,
+      "bandwidth_hz": 1848.6482969347353,
+      "dominant_hz": 1049.4791666666667,
+      "entropy_bits": 7.42926244906169,
+      "bicoherence_mean": 0.0007510007710315688,
+      "flatness_mean": 0.37705690758376664,
+      "n_samples": 6
+    },
+    "Humpback_Whale": {
+      "centroid_hz": 593.3652393222205,
+      "bandwidth_hz": 388.55467525586073,
+      "dominant_hz": 507.8125,
+      "entropy_bits": 4.471645721361031,
+      "bicoherence_mean": 0.00028539714274735236,
+      "flatness_mean": 0.004497231423439268,
+      "n_samples": 6
+    },
+    "Killer_Whale": {
+      "centroid_hz": 1787.5278831340172,
+      "bandwidth_hz": 1276.090564716944,
+      "dominant_hz": 1546.875,
+      "entropy_bits": 6.652110361083263,
+      "bicoherence_mean": 0.00013118475591049748,
+      "flatness_mean": 0.20918213182786363,
+      "n_samples": 6
+    },
+    "Fin,_Finback_Whale": {
+      "centroid_hz": 37.24416962443352,
+      "bandwidth_hz": 29.38260293649438,
+      "dominant_hz": 28.645833333333332,
+      "entropy_bits": 2.275415519554506,
+      "bicoherence_mean": 0.00012359828960007427,
+      "flatness_mean": 3.174174975814948e-10,
+      "n_samples": 6
+    },
+    "Bottlenose_Dolphin": {
+      "centroid_hz": 3791.183231042747,
+      "bandwidth_hz": 2443.6043379691023,
+      "dominant_hz": 1361.9791666666667,
+      "entropy_bits": 5.772647430031515,
+      "bicoherence_mean": 0.0003395853500272473,
+      "flatness_mean": 0.1124746434641651,
+      "n_samples": 6
+    },
+    "Beluga,_White_Whale": {
+      "centroid_hz": 1217.916817858398,
+      "bandwidth_hz": 1609.900929482852,
+      "dominant_hz": 127.60416666666667,
+      "entropy_bits": 6.166440235976065,
+      "bicoherence_mean": 0.00038735496774273113,
+      "flatness_mean": 0.23318691815386805,
+      "n_samples": 6
+    }
+  },
+  "entropy_range": {
+    "min": 2.275415519554506,
+    "max": 7.42926244906169
+  },
+  "ici": {
+    "Sperm_Whale": {
+      "median_ms_min": 21.249999999999993,
+      "median_ms_max": 117.09374999999955,
+      "n_clicks_min": 18,
+      "n_clicks_max": 290
+    },
+    "Killer_Whale": {
+      "median_ms_min": 2.562499999999912,
+      "median_ms_max": 129.375,
+      "n_clicks_min": 10,
+      "n_clicks_max": 41
+    },
+    "Bottlenose_Dolphin": {
+      "median_ms_min": 9.687500000000016,
+      "median_ms_max": 11.46875,
+      "n_clicks_min": 9,
+      "n_clicks_max": 14
+    }
+  },
+  "cdma": {
+    "within_mean": 0.39911330183733557,
+    "within_std": 0.2940091412994553,
+    "between_mean": 0.29698878712800564,
+    "between_std": 0.2754912709765164,
+    "u_stat": 13700.0,
+    "p_value": 0.003372759311445027
+  }
+}

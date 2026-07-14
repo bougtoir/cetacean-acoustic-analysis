@@ -1,0 +1,12 @@
+numpy
+scipy
+matplotlib
+japanize-matplotlib
+librosa
+soundfile
+datasets
+huggingface_hub
+pandas
+scikit-learn
+python-docx
+python-pptx

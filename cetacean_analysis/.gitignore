@@ -1,0 +1,8 @@
+__pycache__/
+*.pyc
+
+# Regenerable per-language figure intermediates (produced by `make manuscripts`).
+# The manuscript DOCX/PPTX embed their figures directly, so these are not needed
+# under version control. output/results.json (single source of truth) IS tracked.
+output/*_ja.png
+output/*_en.png
